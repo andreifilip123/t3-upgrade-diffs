@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "webhook:dev": "npx webhookthing@latest",
+    "generate-all-missing-diffs": "tsx src/lib/runGenerateAllScript.ts"
   },
   "dependencies": {
     "@t3-oss/env-nextjs": "^0.2.1",
@@ -24,6 +26,7 @@
     "@typescript-eslint/parser": "^5.56.0",
     "eslint": "^8.36.0",
     "eslint-config-next": "^13.4.1",
+    "tsx": "^3.12.7",
     "typescript": "^5.0.2"
   },
   "ct3aMetadata": {

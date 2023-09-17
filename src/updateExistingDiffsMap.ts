@@ -31,6 +31,6 @@ export const updateExistingDiffsMap = async () => {
 
   fs.writeFileSync(
     EXISTING_DIFFS_PATH,
-    JSON.stringify(sortedDiffsObject, null, 2),
+    JSON.stringify(sortedDiffsObject, null, 2) + "\n",
   );
 };

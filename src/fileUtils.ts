@@ -158,7 +158,7 @@ export const ignoreDiffs = async (diffs: string[]) => {
 
   await fs.promises.writeFile(
     IGNORED_DIFFS_PATH,
-    JSON.stringify(sortedIgnoredDiffsObject, null, 2),
+    JSON.stringify(sortedIgnoredDiffsObject, null, 2) + "\n",
   );
 };
 

@@ -1,0 +1,178 @@
+diff --git a/.eslintrc.cjs b/.eslintrc.cjs
+deleted file mode 100644
+index a92fb0b..0000000
+--- a/.eslintrc.cjs
++++ /dev/null
+@@ -1,42 +0,0 @@
+-/** @type {import("eslint").Linter.Config} */
+-const config = {
+-  "parser": "@typescript-eslint/parser",
+-  "parserOptions": {
+-    "project": true
+-  },
+-  "plugins": [
+-    "@typescript-eslint"
+-  ],
+-  "extends": [
+-    "next/core-web-vitals",
+-    "plugin:@typescript-eslint/recommended-type-checked",
+-    "plugin:@typescript-eslint/stylistic-type-checked"
+-  ],
+-  "rules": {
+-    "@typescript-eslint/array-type": "off",
+-    "@typescript-eslint/consistent-type-definitions": "off",
+-    "@typescript-eslint/consistent-type-imports": [
+-      "warn",
+-      {
+-        "prefer": "type-imports",
+-        "fixStyle": "inline-type-imports"
+-      }
+-    ],
+-    "@typescript-eslint/no-unused-vars": [
+-      "warn",
+-      {
+-        "argsIgnorePattern": "^_"
+-      }
+-    ],
+-    "@typescript-eslint/require-await": "off",
+-    "@typescript-eslint/no-misused-promises": [
+-      "error",
+-      {
+-        "checksVoidReturn": {
+-          "attributes": false
+-        }
+-      }
+-    ]
+-  }
+-}
+-module.exports = config;
+\ No newline at end of file
+diff --git a/next.config.js b/next.config.js
+index 98b6f90..080cc56 100644
+--- a/next.config.js
++++ b/next.config.js
+@@ -2,7 +2,7 @@
+  * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially useful
+  * for Docker builds.
+  */
+-await import("./src/env.js");
++import "./src/env.js";
+ 
+ /** @type {import("next").NextConfig} */
+ const config = {
+@@ -17,7 +17,6 @@ const config = {
+     locales: ["en"],
+     defaultLocale: "en",
+   },
+-  transpilePackages: ["geist"],
+ };
+ 
+ export default config;
+diff --git a/package.json b/package.json
+index 8e8c8e4..0eae74f 100644
+--- a/package.json
++++ b/package.json
+@@ -1,41 +1,36 @@
+ {
+-  "name": "current",
++  "name": "upgrade",
+   "version": "0.1.0",
+   "private": true,
+   "type": "module",
+   "scripts": {
+     "build": "next build",
+-    "dev": "next dev",
+-    "lint": "next lint",
+-    "start": "next start",
+-    "postinstall": "prisma generate",
++    "db:generate": "prisma migrate dev",
++    "db:migrate": "prisma migrate deploy",
+     "db:push": "prisma db push",
+     "db:studio": "prisma studio",
+-    "db:generate": "prisma migrate dev",
+-    "db:migrate": "prisma migrate deploy"
++    "dev": "next dev --turbo",
++    "postinstall": "prisma generate",
++    "preview": "next build && next start",
++    "start": "next start",
++    "typecheck": "tsc --noEmit"
+   },
+   "dependencies": {
+-    "@prisma/client": "^5.14.0",
+-    "@t3-oss/env-nextjs": "^0.10.1",
+-    "geist": "^1.3.0",
+-    "next": "^14.2.1",
+-    "react": "^18.3.0",
+-    "react-dom": "^18.3.0",
+-    "zod": "^3.23.3"
++    "@prisma/client": "^6.5.0",
++    "@t3-oss/env-nextjs": "^0.12.0",
++    "next": "^15.2.3",
++    "react": "^19.0.0",
++    "react-dom": "^19.0.0",
++    "zod": "^3.24.2"
+   },
+   "devDependencies": {
+-    "@types/eslint": "^8.56.2",
+-    "@types/node": "^20.11.20",
+-    "@types/react": "^18.2.57",
+-    "@types/react-dom": "^18.2.19",
+-    "@typescript-eslint/eslint-plugin": "^7.1.1",
+-    "@typescript-eslint/parser": "^7.1.1",
+-    "eslint": "^8.57.0",
+-    "eslint-config-next": "^14.1.3",
+-    "prisma": "^5.14.0",
+-    "typescript": "^5.4.2"
++    "@types/node": "^20.14.10",
++    "@types/react": "^19.0.0",
++    "@types/react-dom": "^19.0.0",
++    "prisma": "^6.5.0",
++    "typescript": "^5.8.2"
+   },
+   "ct3aMetadata": {
+-    "initVersion": "7.36.0"
++    "initVersion": "7.39.3"
+   }
+ }
+diff --git a/src/pages/_app.tsx b/src/pages/_app.tsx
+index e7e7fb2..be27911 100644
+--- a/src/pages/_app.tsx
++++ b/src/pages/_app.tsx
+@@ -1,11 +1,15 @@
+-import { GeistSans } from "geist/font/sans";
+ import { type AppType } from "next/dist/shared/lib/utils";
++import { Geist } from "next/font/google";
+ 
+ import "~/styles/globals.css";
+ 
++const geist = Geist({
++  subsets: ["latin"],
++});
++
+ const MyApp: AppType = ({ Component, pageProps }) => {
+   return (
+-    <div className={GeistSans.className}>
++    <div className={geist.className}>
+       <Component {...pageProps} />
+     </div>
+   );
+diff --git a/tsconfig.json b/tsconfig.json
+index 905062d..1fd505b 100644
+--- a/tsconfig.json
++++ b/tsconfig.json
+@@ -8,6 +8,7 @@
+     "resolveJsonModule": true,
+     "moduleDetection": "force",
+     "isolatedModules": true,
++    "verbatimModuleSyntax": true,
+ 
+     /* Strictness */
+     "strict": true,
+@@ -30,7 +31,6 @@
+     }
+   },
+   "include": [
+-    ".eslintrc.cjs",
+     "next-env.d.ts",
+     "**/*.ts",
+     "**/*.tsx",

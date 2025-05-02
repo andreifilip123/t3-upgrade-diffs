@@ -1,0 +1,33 @@
+diff --git a/package.json b/package.json
+index d596d8c..baf9678 100644
+--- a/package.json
++++ b/package.json
+@@ -1,5 +1,5 @@
+ {
+-  "name": "current",
++  "name": "upgrade",
+   "version": "0.1.0",
+   "private": true,
+   "type": "module",
+@@ -17,7 +17,7 @@
+   },
+   "dependencies": {
+     "@auth/prisma-adapter": "^2.7.2",
+-    "@prisma/client": "^5.14.0",
++    "@prisma/client": "^6.5.0",
+     "@t3-oss/env-nextjs": "^0.12.0",
+     "next": "^15.2.3",
+     "next-auth": "5.0.0-beta.25",
+@@ -29,10 +29,10 @@
+     "@types/node": "^20.14.10",
+     "@types/react": "^19.0.0",
+     "@types/react-dom": "^19.0.0",
+-    "prisma": "^5.14.0",
++    "prisma": "^6.5.0",
+     "typescript": "^5.8.2"
+   },
+   "ct3aMetadata": {
+-    "initVersion": "7.39.0"
++    "initVersion": "7.39.2"
+   }
+ }

@@ -63,7 +63,7 @@ export default async function generateDiff(params: unknown) {
   }
 
   const getCommand = (version: string, folderName: string) =>
-    `pnpm create t3-app@${version} ${folderName} --CI ${featureFlags} --noInstall`;
+    `bun create t3-app@${version} ${folderName} --CI ${featureFlags} --noInstall`;
 
   if (fs.existsSync(diffPath)) {
     const differences = fs.readFileSync(diffPath, "utf8");

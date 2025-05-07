@@ -30,4 +30,3 @@ jobs:
           branch: new-diffs
           delete-branch: true
           title: "Generate new diffs"
-          reviewers: andreifilip123
